@@ -1,5 +1,32 @@
-import {notFound} from 'next/navigation';import type {Metadata} from 'next';import {getRecipe,recipes} from '@/data/recipes';import RecipeActions from '@/components/RecipeActions';
-export const dynamicParams=false;
-export function generateStaticParams(){return recipes.map(r=>({slug:r.slug}))}
-export async function generateMetadata({params}:{params:Promise<{slug:string}>}):Promise<Metadata>{const {slug}=await params;const r=getRecipe(slug);if(!r)return{};return{title:`${r.title} | Rasoi AI`,description:r.description}}
-export default async function RecipePage({params}:{params:Promise<{slug:string}>}){const {slug}=await params;const r=getRecipe(slug);if(!r)notFound();const jsonLd={'@context':'https://schema.org','@type':'Recipe',name:r.title,description:r.description,recipeCategory:r.meal,recipeYield:`${r.servings} servings`,prepTime:`PT${r.prepTime}M`,recipeIngredient:r.ingredients,recipeInstructions:r.steps.map(text=>({'@type':'HowToStep',text})),nutrition:{'@type':'NutritionInformation',calories:`${r.nutrition.calories} kcal`,proteinContent:`${r.nutrition.protein} g`,fiberContent:`${r.nutrition.fiber} g`,fatContent:`${r.nutrition.fats} g`}};return <main><nav className="nav"><a className="logo" href="/">🥘 Rasoi <span>AI</span></a><a className="outline" href="/">← Recipes</a></nav><article className="detail"><span className="tag">{r.meal} · {r.tags.join(' · ')}</span><h1>{r.title}</h1><p className="lead">{r.description}</p><div className="nutrition">{[['Calories',`${r.nutrition.calories} kcal`],['Protein',`${r.nutrition.protein} g`],['Fiber',`${r.nutrition.fiber} g`],['Healthy fats',`${r.nutrition.fats} g`]].map(([a,b])=><div key={a}><strong>{b}</strong><small>{a}</small></div>)}</div><div className="detail-grid"><section><h2>Ingredients</h2><ul>{r.ingredients.map(x=><li key={x}>{x}</li>)}</ul></section><section><h2>Method</h2><ol>{r.steps.map(x=><li key={x}>{x}</li>)}</ol></section></div><RecipeActions recipe={r}/></article><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(jsonLd)}}/></main>}
+import { notFound } from 'next/navigation'; import type { Metadata } from 'next';
+import { getRecipe, recipes } from '../../../data/recipes';
+import RecipeActions from '../../../components/RecipeActions';
+export const dynamicParams = false;
+
+export function generateStaticParams() {
+    return recipes.map(r => ({ slug: r.slug }))
+}
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+    const { slug } = await params;
+    const r = getRecipe(slug); if (!r) return {}; return { title: `${r.title} | Rasoi AI`, description: r.description }
+}
+export default async function RecipePage({ params }: { params: Promise<{ slug: string }> }) {
+    const { slug } = await params;
+    const r = getRecipe(slug);
+    if (!r) notFound();
+    const jsonLd = { '@context': 'https://schema.org', '@type': 'Recipe', name: r.title, description: r.description, recipeCategory: r.meal, recipeYield: `${r.servings} servings`, prepTime: `PT${r.prepTime}M`, recipeIngredient: r.ingredients, recipeInstructions: r.steps.map(text => ({ '@type': 'HowToStep', text })), nutrition: { '@type': 'NutritionInformation', calories: `${r.nutrition.calories} kcal`, proteinContent: `${r.nutrition.protein} g`, fiberContent: `${r.nutrition.fiber} g`, fatContent: `${r.nutrition.fats} g` } };
+    return <main>
+        <nav className="nav">
+            <a className="logo" href="/">🥘 Rasoi <span>AI</span></a>
+            <a className="outline" href="/">← Recipes</a></nav><article className="detail">
+            <span className="tag">{r.meal} · {r.tags.join(' · ')}
+            </span><h1>{r.title}</h1><p className="lead">{
+                r.description}</p><div className="nutrition">{[['Calories', `${r.nutrition.calories} kcal`], ['Protein', `${r.nutrition.protein} g`], ['Fiber', `${r.nutrition.fiber} g`], ['Healthy fats', `${r.nutrition.fats} g`]].map(([a, b]) => <div key={a}><strong>{b}</strong>
+                    <small>{a}</small></div>)}
+            </div>
+            <div className="detail-grid">
+                <section><h2>Ingredients</h2><ul>{r.ingredients.map(x => <li key={x}>{x}</li>)}</ul></section>
+                <section><h2>Method</h2><ol>{r.steps.map(x => <li key={x}>{x}</li>)}</ol></section></div><RecipeActions recipe={r} /></article>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+    </main>
+}

@@ -1,5 +1,25 @@
-import {notFound} from 'next/navigation';import type {Metadata} from 'next';import {recipes} from '@/data/recipes';import RecipeExplorer from '@/components/RecipeExplorer';
-const categories=['breakfast','lunch','dinner','high-protein-recipes','high-fiber-recipes','quick-indian-recipes','bachelor-friendly-recipes','15-minute-recipes'];
-export function generateStaticParams(){return categories.map(category=>({category}))}
-export async function generateMetadata({params}:{params:Promise<{category:string}>}):Promise<Metadata>{const {category}=await params;const title=category.split('-').map(x=>x[0].toUpperCase()+x.slice(1)).join(' ');return{title:`${title} | Rasoi AI`,description:`Discover practical Indian ${title.toLowerCase()} recipes on Rasoi AI.`}}
-export default async function Category({params}:{params:Promise<{category:string}>}){const {category}=await params;if(!categories.includes(category))notFound();let data=recipes;if(category==='breakfast'||category==='lunch'||category==='dinner')data=recipes.filter(r=>r.meal===category);else if(category==='high-protein-recipes')data=recipes.filter(r=>r.tags.includes('high-protein'));else if(category==='high-fiber-recipes')data=recipes.filter(r=>r.tags.includes('high-fiber'));else if(category==='quick-indian-recipes'||category==='15-minute-recipes')data=recipes.filter(r=>r.tags.includes('quick')&&(category!=='15-minute-recipes'||r.prepTime<=15));else data=recipes.filter(r=>r.prepTime<=30);const title=category.split('-').map(x=>x[0].toUpperCase()+x.slice(1)).join(' ');return <main><nav className="nav"><a className="logo" href="/">🥘 Rasoi <span>AI</span></a><a className="outline" href="/">Home</a></nav><section className="content"><p className="eyebrow">RASOI AI RECIPES</p><h1>{title}</h1><p className="subtitle left">Simple Indian recipes for everyday cooking.</p><RecipeExplorer recipes={data}/></section></main>}
+import { notFound } from 'next/navigation';
+import type { Metadata } from 'next';
+import { recipes } from '../../data/recipes';
+import RecipeExplorer from '../../components/RecipeExplorer';
+
+const categories = ['breakfast', 'lunch', 'dinner', 'high-protein-recipes', 'high-fiber-recipes', 'quick-indian-recipes', 'bachelor-friendly-recipes', '15-minute-recipes'];
+export function generateStaticParams() {
+    return categories.map(category => ({ category }))
+}
+export async function generateMetadata({ params }: { params: Promise<{ category: string }> }):
+    Promise<Metadata> {
+    const { category } = await params;
+    const title = category.split('-').map(x => x[0].toUpperCase() + x.slice(1)).join(' ');
+    return { title: `${title} | Rasoi AI`, description: `Discover practical Indian ${title.toLowerCase()} recipes on Rasoi AI.` }
+}
+export default async function Category({ params }: { params: Promise<{ category: string }> }) {
+    const { category } = await params;
+    if (!categories.includes(category)) notFound();
+    let data = recipes; if (category === 'breakfast' || category === 'lunch' || category === 'dinner') data = recipes.filter(r => r.meal === category);
+    else if (category === 'high-protein-recipes') data = recipes.filter(r => r.tags.includes('high-protein'));
+    else if (category === 'high-fiber-recipes') data = recipes.filter(r => r.tags.includes('high-fiber'));
+    else if (category === 'quick-indian-recipes' || category === '15-minute-recipes') data = recipes.filter(r => r.tags.includes('quick') && (category !== '15-minute-recipes' || r.prepTime <= 15));
+    else data = recipes.filter(r => r.prepTime <= 30); const title = category.split('-').map(x => x[0].toUpperCase() + x.slice(1)).join(' ');
+    return <main><nav className="nav"><a className="logo" href="/">🥘 Rasoi <span>AI</span></a><a className="outline" href="/">Home</a></nav><section className="content"><p className="eyebrow">RASOI AI RECIPES</p><h1>{title}</h1><p className="subtitle left">Simple Indian recipes for everyday cooking.</p><RecipeExplorer recipes={data} /></section></main>
+}

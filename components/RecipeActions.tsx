@@ -1,3 +1,20 @@
 'use client';
-import {useState} from 'react';import {Heart,ShoppingBasket} from 'lucide-react';import type {Recipe} from '@/data/recipes';import {toggleFavorite,addShoppingItems,getFavorites} from '@/lib/storage';
-export default function RecipeActions({recipe}:{recipe:Recipe}){const [fav,setFav]=useState(getFavorites().some(x=>x.slug===recipe.slug));const [added,setAdded]=useState(false);return <div className="actions"><button className="primary" onClick={()=>{toggleFavorite({slug:recipe.slug,title:recipe.title});setFav(!fav)}}><Heart size={18} fill={fav?'currentColor':'none'}/>{fav?'Saved':'Save recipe'}</button><button className="secondary" onClick={()=>{addShoppingItems(recipe.ingredients);setAdded(true)}}><ShoppingBasket size={18}/>{added?'Added to shopping list':'Add ingredients'}</button></div>}
+import { useState } from 'react';
+import { Heart, ShoppingBasket } from 'lucide-react';
+import type { Recipe } from '../data/recipes';
+import { toggleFavorite, addShoppingItems, getFavorites } from '../lib/storage';
+export default function RecipeActions({ recipe }: { recipe: Recipe }) {
+    const [fav, setFav] = useState(getFavorites().some(x => x.slug === recipe.slug));
+    const [added, setAdded] = useState(false);
+    return <>
+        <div className="actions">
+            <button className="primary" onClick={() => { toggleFavorite({ slug: recipe.slug, title: recipe.title }); setFav(!fav) }}>
+                <Heart size={18} fill={fav ? 'currentColor' : 'none'} />
+                {fav ? 'Saved' : 'Save recipe'}
+            </button>
+            <button className="secondary" onClick={() => { addShoppingItems(recipe.ingredients); setAdded(true) }}>
+                <ShoppingBasket size={18} />{added ? 'Added to shopping list' : 'Add ingredients'}
+            </button>
+        </div>
+    </>
+}
