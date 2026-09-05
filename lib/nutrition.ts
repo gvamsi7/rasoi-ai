@@ -1,0 +1,3 @@
+export type Nutrition={protein:number;fiber:number;fats:number;calories:number};
+export function scaleNutrition(n:Nutrition,fromServings:number,toServings:number):Nutrition{const ratio=toServings/Math.max(1,fromServings);return{protein:Math.round(n.protein*ratio),fiber:Math.round(n.fiber*ratio),fats:Math.round(n.fats*ratio),calories:Math.round(n.calories*ratio)}}
+export function nutritionScore(n:Nutrition){let score=0;if(n.protein>=20)score+=40;else if(n.protein>=12)score+=25;if(n.fiber>=8)score+=30;else if(n.fiber>=5)score+=20;if(n.fats>=5&&n.fats<=20)score+=20;if(n.calories>=200&&n.calories<=600)score+=10;return Math.min(100,score)}
