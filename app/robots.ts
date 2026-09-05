@@ -1,5 +1,2 @@
-import type { MetadataRoute } from 'next';
-
-export default function robots(): MetadataRoute.Robots {
-  return { rules: { userAgent: '*', allow: '/' }, sitemap: 'https://rasoi-ai.vercel.app/sitemap.xml' };
-}
+import type {MetadataRoute} from 'next';
+export default function robots():MetadataRoute.Robots{const base=process.env.NEXT_PUBLIC_SITE_URL||'https://rasoi-ai.vercel.app';return{rules:{userAgent:'*',allow:'/'},sitemap:`${base}/sitemap.xml`}}
