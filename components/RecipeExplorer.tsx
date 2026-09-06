@@ -47,13 +47,21 @@ export default function RecipeExplorer({ recipes }: { recipes: Recipe[] }) {
   };
   return <>
     <div className="toolbox">
-      <div className="searchbox"><Search size={19} /><input value={ingredientInput} onChange={e => setIngredientInput(e.target.value)} onKeyDown={e => { if (e.key === 'Enter') addIngredients(ingredientInput); }} placeholder="Add ingredients: rice, eggs, onion..." /><button className="mic" onClick={listen} aria-label="Voice ingredient input"><Mic size={18} />{voice ? 'Listening…' : ''}</button></div>
+      <div className="searchbox"><Search size={19} /><input value={ingredientInput} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setIngredientInput(e.target.value)} onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => { if (e.key === 'Enter') addIngredients(ingredientInput); }} placeholder="Add ingredients: rice, eggs, onion..." />
+        <button className="mic" onClick={listen} aria-label="Voice ingredient input"><Mic size={18} />{voice ? 'Listening…' : ''}</button>
+      </div>
       <button className="primary" onClick={() => addIngredients(ingredientInput)}><Plus size={17} />Add</button>
       <button className="primary" onClick={generate}><Sparkles size={17} />{loading ? 'Creating…' : 'Create with AI'}</button>
     </div>
     <div className="ingredient-help"><span>Try adding:</span>{suggestions.map(item => <button key={item} onClick={() => addIngredients(item)}>+ {item}</button>)}</div>
     {ingredients.length > 0 && <div className="ingredient-chips">{ingredients.map(item => <span className="ingredient-chip" key={item}>{item}<button onClick={() => removeIngredient(item)} aria-label={`Remove ${item}`}><X size={13} /></button></span>)}<button className="clear-ingredients" onClick={() => setIngredients([])}><RotateCcw size={13} /> Clear all</button></div>}
-    <div className="filters"><SlidersHorizontal size={17} /><select value={meal} onChange={e => setMeal(e.target.value)}><option value="all">All meals</option><option value="breakfast">Breakfast</option><option value="lunch">Lunch</option><option value="dinner">Dinner</option></select><select value={tag} onChange={e => setTag(e.target.value)}><option value="all">All goals</option><option value="high-protein">High protein</option><option value="high-fiber">High fiber</option><option value="quick">Quick</option><option value="budget">Budget</option></select><label>≤ {max} min <input type="range" min="10" max="60" step="5" value={max} onChange={e => setMax(Number(e.target.value))} /></label><label><input type="checkbox" checked={protein} onChange={e => setProtein(e.target.checked)} /> 20g+ protein</label></div>
+    <div className="filters"><SlidersHorizontal size={17} /><select value={meal} onChange={e => setMeal(e.target.value)}><option value="all">All meals</option><option value="breakfast">Breakfast</option><option value="lunch">Lunch</option><option value="dinner">Dinner</option></select><select value={tag} onChange={e => setTag(e.target.value)}>
+      <option value="all">All goals</option>
+      <option value="high-protein">High protein</option>
+      <option value="high-fiber">High fiber</option>
+      <option value="quick">Quick</option>
+      <option value="budget">Budget</option>
+    </select><label>≤ {max} min <input type="range" min="10" max="60" step="5" value={max} onChange={e => setMax(Number(e.target.value))} /></label><label><input type="checkbox" checked={protein} onChange={e => setProtein(e.target.checked)} /> 20g+ protein</label></div>
     {ai && <article className="ai-result"><div><span className="tag">AI GENERATED</span><h2>{ai.title}</h2><p>{ai.description}</p></div><button className="primary" onClick={() => addShoppingItems(ai.ingredients)}>Add ingredients to list <ShoppingBasket size={17} /></button></article>}
     <div className="recipe-grid">{filtered.map(r => <article className="recipe" key={r.slug}><div className="recipe-image">🍛</div><div className="recipe-body"><div className="recipe-top"><span className="tag">{r.tags[0].replace('-', ' ')}</span><button className="iconbtn" onClick={() => { const n = toggleFavorite({ slug: r.slug, title: r.title }); setFav(n.map(x => x.slug)); }} aria-label="Favorite"><Heart size={18} fill={fav.includes(r.slug) ? 'currentColor' : 'none'} /></button></div><h3><a href={`/recipes/${r.slug}`}>{r.title}</a></h3><p>{r.description}</p><small>⏱ {r.prepTime} min · {r.nutrition.protein}g protein · {r.nutrition.fiber}g fiber</small></div></article>)}</div>{filtered.length === 0 && <div className="empty">No recipes match those filters. Try different ingredients or ask Rasoi AI to create one.</div>}
   </>;
