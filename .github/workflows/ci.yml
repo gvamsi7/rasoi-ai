@@ -20,3 +20,7 @@ jobs:
         env:
           OPENAI_API_KEY: placeholder
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/rasoi
+
+      - run: node tests/api-smoke.cjs
+      - run: npx playwright install --with-deps chromium
+      - run: node tests/run-browser.cjs

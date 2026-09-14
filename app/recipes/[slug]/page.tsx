@@ -21,7 +21,7 @@ export default async function RecipePage({ params }: { params: Promise<{ slug: s
             <a className="outline" href="/">← Recipes</a></nav><article className="detail">
             <span className="tag">{r.meal} · {r.tags.join(' · ')}
             </span><h1>{r.title}</h1><p className="lead">{
-                r.description}</p><div className="nutrition">{[['Calories', `${r.nutrition.calories} kcal`], ['Protein', `${r.nutrition.protein} g`], ['Fiber', `${r.nutrition.fiber} g`], ['Healthy fats', `${r.nutrition.fats} g`]].map(([a, b]) => <div key={a}><strong>{b}</strong>
+                r.description}</p><p>{r.prepTime} minutes · {r.servings} servings · Nutrition estimates per serving</p><div className="nutrition">{[['Calories', `${r.nutrition.calories} kcal`], ['Protein', `${r.nutrition.protein} g`], ['Fiber', `${r.nutrition.fiber} g`], ['Total fats', `${r.nutrition.fats} g`]].map(([a, b]) => <div key={a}><strong>{b}</strong>
                     <small>{a}</small></div>)}
             </div>
             <div className="detail-grid">

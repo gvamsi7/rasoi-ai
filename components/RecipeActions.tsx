@@ -1,10 +1,11 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Heart, ShoppingBasket } from 'lucide-react';
 import type { Recipe } from '../data/recipes';
 import { toggleFavorite, addShoppingItems, getFavorites } from '../lib/storage';
 export default function RecipeActions({ recipe }: { recipe: Recipe }) {
-    const [fav, setFav] = useState(getFavorites().some(x => x.slug === recipe.slug));
+    const [fav, setFav] = useState(false);
+    useEffect(() => setFav(getFavorites().some(x => x.slug === recipe.slug)), [recipe.slug]);
     const [added, setAdded] = useState(false);
     return <>
         <div className="actions">
