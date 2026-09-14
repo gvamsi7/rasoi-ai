@@ -126,7 +126,7 @@ a {
 
 .section-head {
     display: flex;
-    align-items: end;
+    align-items: flex-end;
     justify-content: space-between;
     margin: 35px 0 22px
 }
@@ -697,3 +697,34 @@ a {
         flex-direction: column
     }
 }
+/* Complete cooking workspace */
+body {font-size:16px}
+button,input,select {font:inherit}
+button {min-height:40px}
+button:disabled {opacity:.6;cursor:wait}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible {outline:3px solid #b16f24;outline-offset:3px}
+.section-head h1 {font-family:'Playfair Display',serif;font-size:clamp(32px,5vw,52px);letter-spacing:-1px;margin:10px 0}
+.section-head p:not(.eyebrow) {color:#53625a;line-height:1.6}
+.eyebrow,.tag {font-size:12px}
+.filters,.ingredient-help,.ingredient-chip,.recipe p,.recipe small {font-size:14px}
+.recipe p {line-height:1.65}
+.searchbox input {min-width:0;width:100%;font-size:16px}
+.library-search {margin-top:28px}
+.exclusions {display:flex;gap:14px;align-items:center;font-size:14px;flex-wrap:wrap;margin:16px 0 24px}
+.exclusions input,.toolbox>input {border:1px solid var(--line);padding:12px;border-radius:10px;flex:1;min-width:180px}
+.notice {border-left:4px solid var(--accent);background:white;padding:16px;line-height:1.6}
+.results-heading {display:flex;align-items:center;justify-content:space-between;gap:16px;margin:32px 0 20px}
+.results-heading h2 {font-size:24px;margin:0}
+.results-heading span {font-size:14px;white-space:nowrap;color:#526158}
+.generated-recipe {background:white;border:1px solid var(--green);padding:28px;border-radius:16px;line-height:1.65}
+.generated-recipe .detail-grid {gap:28px}
+.recipe-image {height:94px;display:flex;justify-content:space-between;padding:22px;background:#edf1e8;color:var(--green)}
+.recipe-image span {font-size:38px}
+.recipe-image small {font-size:14px;text-transform:capitalize;letter-spacing:1px}
+.recipe {transition:transform .15s ease,box-shadow .15s ease}
+.recipe:hover {transform:translateY(-3px);box-shadow:0 8px 24px #24352b12}
+.shopping-page .toolbox {margin-bottom:24px}
+.nav a:hover {color:var(--accent)}
+@media(max-width:520px){.nav {padding:16px;gap:18px;flex-wrap:wrap}.navlinks {display:flex;gap:16px;font-size:14px}.results-heading {align-items:flex-start}.generated-recipe {padding:18px}.searchbox {width:100%}.section-head {margin-top:15px}}
+@media(prefers-reduced-motion:reduce){* {scroll-behavior:auto!important;transition:none!important}}
+@media print{.nav,.actions,button {display:none!important}.detail {padding:0;max-width:none}body {background:white}}

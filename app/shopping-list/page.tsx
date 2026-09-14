@@ -2,9 +2,10 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { Check, ClipboardList, Trash2, X } from 'lucide-react';
-import { getShoppingList, removeShoppingItem } from '../../lib/storage';
+import { getShoppingList, removeShoppingItem, addShoppingItems } from '../../lib/storage';
 
 export default function ShoppingList() {
+  const [newItem, setNewItem] = useState('');
   const [items, setItems] = useState<string[]>([]);
   const [checked, setChecked] = useState<string[]>([]);
 
@@ -32,7 +33,7 @@ export default function ShoppingList() {
     localStorage.setItem('rasoi:shopping-checked', JSON.stringify(next));
   };
 
-  const clearCompleted = () => checked.forEach(removeItem);
+  const clearCompleted = () => { checked.forEach(item => removeShoppingItem(item)); setItems(getShoppingList()); setChecked([]); localStorage.setItem('rasoi:shopping-checked', '[]'); };
 
   return (
     <main>
@@ -50,6 +51,7 @@ export default function ShoppingList() {
           <div className="shopping-icon"><ClipboardList size={30} /></div>
         </div>
 
+        <form className="toolbox" onSubmit={e => { e.preventDefault(); if(newItem.trim()) {setItems(addShoppingItems([newItem.trim()]));setNewItem('');} }}><input aria-label="Shopping item" value={newItem} onChange={e=>setNewItem(e.target.value)} maxLength={160} placeholder="Add an item…" /><button className="primary">Add item</button></form>
         {items.length ? (
           <>
             <div className="shopping-summary">
